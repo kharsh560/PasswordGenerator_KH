@@ -6,38 +6,40 @@ function App() {
   const [IncludeSplChars, setIncludeSplChars] = useState(false);
   const [Password, setPassword] = useState();
 
-  function randomNumberInRange() {}
+  function inRangeNumberGenerator() {}
 
   function passwordGenerator() {
-    // let randomNum1 = Math.floor(Math.random() * 26) + 65;
-    // let randomNum2 = Math.floor(Math.random() * 26) + 97;
-    // let randomNum3 = Math.floor(Math.random() * 2) + 1;
-    // let alphaNum = `randomNum${randomNum3}`;
-
     let randObj = {
-      randomNum1: Math.floor(Math.random() * 26) + 65,
-      randomNum2: Math.floor(Math.random() * 26) + 97,
-      randomNum3: Math.floor(Math.random() * 2) + 1,
+      randomNum1: () => {
+        return Math.floor(Math.random() * 26) + 65;
+      },
+      randomNum2: () => {
+        return Math.floor(Math.random() * 26) + 97;
+      },
+      randomNum3: () => {
+        return Math.floor(Math.random() * 2) + 1;
+      },
       // alphaNum: `randomNum${randomNum3}`,
     };
-    let alphaNum = randObj[`randomNum${randObj.randomNum3}`];
+
+    let alphaNum = randObj[`randomNum${randObj.randomNum3()}`](); 
+    // Of course, I needed to write "()" at those two places bcoz they were functions!!
     // console.log(alphaNum);
     // This alphaNum now contain numbers in this range [65, 90] and [97, 122]
 
     // Now converting this number to ascii value!
 
-    // let lengthEg = 10;
-    // let string = String.fromCharCode(alphaNum);
+    let lengthEg = 10;
+    let string = String.fromCharCode(alphaNum);
+    let passCode = string;
 
-    // for (let i = 1; i <= lengthEg; i++) {
-    //   var pass = string;
-    //   pass =
-    //     pass + String.fromCharCode((randObj[`randomNum${randObj.randomNum3}`]));
-    // }
+    for (let i = 1; i <= lengthEg; i++) {
+      alphaNum = randObj[`randomNum${randObj.randomNum3()}`]();
+      passCode = passCode + String.fromCharCode(alphaNum);
+    }
+    // YES :-) It worked!!!
 
-    // console.log(pass);
-
-    // return alphaNum;
+    document.getElementById("passwordBox").innerText = passCode;
   }
 
   return (
@@ -49,7 +51,10 @@ function App() {
           </h1>
           {/* Div of password appearence and copy */}
           <div className="flex w-full items-center">
-            <div className=" w-[80%] h-10 bg-slate-300 rounded-2xl m-3"></div>
+            <div
+              id="passwordBox"
+              className="w-[80%] h-10 bg-slate-300 rounded-2xl m-3 text-lg font-bold font-ubuntu flex justify-center items-center"
+            ></div>
             <button
               onClick={() => passwordGenerator()}
               className=" bg-green-400 rounded-lg h-fit p-1 hover:bg-green-500 active:text-lg active:ring-4 active:ring-green-800"
