@@ -1,10 +1,10 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 function App() {
   const [Length, setLength] = useState(16);
   const [IncludeNumbers, setIncludeNumbers] = useState(false);
   const [IncludeSplChars, setIncludeSplChars] = useState(false);
-  const [Password, setPassword] = useState();
+  const [Passcode, setPasscode] = useState();
 
   function passwordGeneratorKHstyle() {
     let randObj = {
@@ -38,6 +38,7 @@ function App() {
     // YES :-) It worked!!!
 
     document.getElementById("passwordBox").innerText = passCode;
+    // In the "passwordGenerator()" fxn, I didn't use this. Bcoz, I instead put the variable "passcode" inside the passwordBox div!
   }
 
   const passwordGenerator = useCallback(() => {
@@ -50,13 +51,30 @@ function App() {
     if (IncludeSplChars) string += splChars;
     // If they are not included, then string remains string only!
 
-    for (let i = 0; i <= Length; i++) {
+    for (let i = 0; i <= Length - 1; i++) {
+      // (Length-1) If you don't do "-1" then the loop runs for one extra time, bcoz our counter starts from 0
+      // But, there is NO need to start the counter from 0, simply start it from 1
+      // The araay's index start "0" is taken care of, by Math.random! As its range here is "[0, string.length)" where [ => Inclusive and ( => Exclusive
       password += string[Math.floor(Math.random() * string.length)];
       //Did not do "+1" bcoz the string array starts from 0th index only!
     }
 
-    setPassword(password);
+    setPasscode(password);
   }, [Length, IncludeNumbers, IncludeSplChars]);
+
+  useEffect(() => {
+    passwordGenerator();
+  }, [Length, IncludeNumbers, IncludeSplChars]);
+
+  // Saw from Phind
+  const copyPasscode = async () => {
+    try {
+      await navigator.clipboard.writeText(Passcode);
+      console.log("Content copied to clipboard");
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+    }
+  };
 
   return (
     <>
@@ -67,12 +85,17 @@ function App() {
           </h1>
           {/* Div of password appearence and copy */}
           <div className="flex w-full items-center">
+            {/* Password Box */}
             <div
               id="passwordBox"
               className="w-[80%] h-10 bg-slate-300 rounded-2xl m-3 text-lg font-bold font-ubuntu flex justify-center items-center"
-            ></div>
+            >
+              {" "}
+              {Passcode}{" "}
+            </div>
+            {/* Copy Button */}
             <button
-              onClick={() => passwordGeneratorKHstyle()}
+              onClick={() => copyPasscode()}
               className=" bg-green-400 rounded-lg h-fit p-1 hover:bg-green-500 active:text-lg active:ring-4 active:ring-green-800"
             >
               Copy
@@ -82,7 +105,7 @@ function App() {
             <input
               type="range"
               min="1"
-              max="100"
+              max="30"
               value={Length}
               className=" cursor-pointer appearance-none rounded-lg h-2 bg-gray-300"
               onChange={(e) => {
