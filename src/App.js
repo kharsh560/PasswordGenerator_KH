@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 function App() {
   const [Length, setLength] = useState(16);
@@ -66,11 +66,23 @@ function App() {
     passwordGenerator();
   }, [Length, IncludeNumbers, IncludeSplChars]);
 
+  // using "useRef()" hook (44:20 min)
+  const passCodeRef = useRef(null);
+
   // Saw from Phind
   const copyPasscode = async () => {
     try {
-      await navigator.clipboard.writeText(Passcode);
-      console.log("Content copied to clipboard");
+      // 46:55 min -> Sir is explaining how to copy to clipboard and to do this,
+      // we do not need "useRef" hook!  see (48:42 min)
+      // Else, "useRef" hook is being used by sir for selecting the password after clicking "copy" button!
+      await window.navigator.clipboard.writeText(Passcode);
+      // 49min ->
+      passCodeRef.current.select();
+      // It isn't working. But the same code runs properly in Hitesh's system
+      // Got the reason, "passCodeRef.current.select()" this will do its work only with "input" tag!!
+      console.log(passCodeRef.current.innerText); // This is working properly!
+      // console.log("Content copied to clipboard");
+
     } catch (err) {
       console.error("Failed to copy: ", err);
     }
@@ -89,9 +101,9 @@ function App() {
             <div
               id="passwordBox"
               className="w-[80%] h-10 bg-slate-300 rounded-2xl m-3 text-lg font-bold font-ubuntu flex justify-center items-center"
+              ref={passCodeRef}
             >
-              {" "}
-              {Passcode}{" "}
+              {Passcode}
             </div>
             {/* Copy Button */}
             <button
