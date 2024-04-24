@@ -6,40 +6,40 @@ function App() {
   const [IncludeSplChars, setIncludeSplChars] = useState(false);
   const [Passcode, setPasscode] = useState();
 
-  function passwordGeneratorKHstyle() {
-    let randObj = {
-      randomNum1: () => {
-        return Math.floor(Math.random() * 26) + 65;
-      },
-      randomNum2: () => {
-        return Math.floor(Math.random() * 26) + 97;
-      },
-      randomNum3: () => {
-        return Math.floor(Math.random() * 2) + 1;
-      },
-      // alphaNum: `randomNum${randomNum3}`,
-    };
+  // function passwordGeneratorKHstyle() {
+  //   let randObj = {
+  //     randomNum1: () => {
+  //       return Math.floor(Math.random() * 26) + 65;
+  //     },
+  //     randomNum2: () => {
+  //       return Math.floor(Math.random() * 26) + 97;
+  //     },
+  //     randomNum3: () => {
+  //       return Math.floor(Math.random() * 2) + 1;
+  //     },
+  //     // alphaNum: `randomNum${randomNum3}`,
+  //   };
 
-    let alphaNum = randObj[`randomNum${randObj.randomNum3()}`]();
-    // Of course, I needed to write "()" at those two places bcoz they were functions!!
-    // console.log(alphaNum);
-    // This alphaNum now contain numbers in this range [65, 90] and [97, 122]
+  //   let alphaNum = randObj[`randomNum${randObj.randomNum3()}`]();
+  //   // Of course, I needed to write "()" at those two places bcoz they were functions!!
+  //   // console.log(alphaNum);
+  //   // This alphaNum now contain numbers in this range [65, 90] and [97, 122]
 
-    // Now converting this number to ascii value!
+  //   // Now converting this number to ascii value!
 
-    let lengthEg = 10;
-    let string = String.fromCharCode(alphaNum);
-    let passCode = string;
+  //   let lengthEg = 10;
+  //   let string = String.fromCharCode(alphaNum);
+  //   let passCode = string;
 
-    for (let i = 1; i <= lengthEg; i++) {
-      alphaNum = randObj[`randomNum${randObj.randomNum3()}`]();
-      passCode = passCode + String.fromCharCode(alphaNum);
-    }
-    // YES :-) It worked!!!
+  //   for (let i = 1; i <= lengthEg; i++) {
+  //     alphaNum = randObj[`randomNum${randObj.randomNum3()}`]();
+  //     passCode = passCode + String.fromCharCode(alphaNum);
+  //   }
+  //   // YES :-) It worked!!!
 
-    document.getElementById("passwordBox").innerText = passCode;
-    // In the "passwordGenerator()" fxn, I didn't use this. Bcoz, I instead put the variable "passcode" inside the passwordBox div!
-  }
+  //   document.getElementById("passwordBox").innerText = passCode;
+  //   // In the "passwordGenerator()" fxn, I didn't use this. Bcoz, I instead put the variable "passcode" inside the passwordBox div!
+  // }
 
   const passwordGenerator = useCallback(() => {
     let password = "";
@@ -64,7 +64,7 @@ function App() {
 
   useEffect(() => {
     passwordGenerator();
-  }, [Length, IncludeNumbers, IncludeSplChars]);
+  }, [Length, IncludeNumbers, IncludeSplChars, passwordGenerator]);
 
   // using "useRef()" hook (44:20 min)
   const passCodeRef = useRef(null);
@@ -82,7 +82,6 @@ function App() {
       // Got the reason, "passCodeRef.current.select()" this will do its work only with "input" tag!!
       console.log(passCodeRef.current.innerText); // This is working properly!
       // console.log("Content copied to clipboard");
-
     } catch (err) {
       console.error("Failed to copy: ", err);
     }
