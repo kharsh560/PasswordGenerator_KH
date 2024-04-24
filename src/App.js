@@ -89,17 +89,17 @@ function App() {
 
   return (
     <>
-      <div className=" w-screen h-screen bg-zinc-700 flex justify-center">
+      <div className=" w-screen h-screen bg-zinc-700 flex justify-center mobiles:items-center ">
         <div className=" w-fit h-fit p-4 m-16 bg-yellow-600 rounded-xl shadow-2xl shadow-yellow-700  flex flex-col items-center justify-center ">
-          <h1 className=" text-3xl font-extrabold text-amber-100/65 cursor-default">
+          <h1 className=" text-3xl font-extrabold text-amber-100/65 cursor-default mobiles:text-center">
             Random Password Generator
           </h1>
           {/* Div of password appearence and copy */}
-          <div className="flex w-full items-center">
+          <div className="flex w-full items-center mobiles:flex-col ">
             {/* Password Box */}
             <div
               id="passwordBox"
-              className="w-[80%] h-10 bg-slate-300 rounded-2xl m-3 text-lg font-bold font-ubuntu flex justify-center items-center"
+              className="w-[80%] h-10 bg-slate-300 rounded-2xl m-3 text-lg font-bold font-ubuntu flex justify-center items-center mobiles:w-fit mobiles:p-2"
               ref={passCodeRef}
             >
               {Passcode}
@@ -107,18 +107,19 @@ function App() {
             {/* Copy Button */}
             <button
               onClick={() => copyPasscode()}
-              className=" bg-green-400 rounded-lg h-fit p-1 hover:bg-green-500 active:text-lg active:ring-4 active:ring-green-800"
+              className=" bg-green-400 rounded-lg h-fit p-1 hover:bg-green-500 active:text-lg active:ring-4 active:ring-green-800 mobiles:m-2"
             >
               Copy
             </button>
           </div>
-          <div className="flex justify-center items-center">
+          {/* ###################################################### For laptops ###################################################### */}
+          <div className="flex justify-center items-center mobiles:hidden">
             <input
               type="range"
               min="1"
               max="30"
               value={Length}
-              className=" cursor-pointer appearance-none rounded-lg h-2 bg-gray-300"
+              className=" cursor-pointer appearance-none rounded-lg h-2 bg-gray-300 sm:m-4"
               onChange={(e) => {
                 setLength(e.target.value);
               }}
@@ -155,6 +156,55 @@ function App() {
                 setIncludeSplChars((prev) => !prev);
               }}
             ></input>
+          </div>
+          {/* ###################################################### For mobiles ###################################################### */}
+          <div className="flex justify-center items-center sm:hidden mobiles:flex-col ">
+            {/* Note: sm:- [640px, infinity) and mobiles:- upto 639px */}
+            <div className=" flex flex-col justify-center items-center border-2 border-amber-800/45 p-2 m-2">
+              <input
+                type="range"
+                min="1"
+                max="30"
+                value={Length}
+                className=" cursor-pointer appearance-none rounded-lg h-2 bg-gray-300 mobiles:h-4"
+                onChange={(e) => {
+                  setLength(e.target.value);
+                }}
+              ></input>
+              <span className=" font-semibold mx-2 cursor-default mt-3">
+                Length({Length})
+              </span>
+            </div>
+
+            <div className=" flex flex-col justify-center items-center border-2 border-amber-800/45 p-2 m-2">
+              <span className=" font-semibold mx-2 cursor-default">
+                Numbers
+              </span>
+              {/* Number Checkbox */}
+              <input
+                type="checkbox"
+                className=" cursor-pointer"
+                defaultChecked={IncludeNumbers}
+                onChange={() => {
+                  setIncludeNumbers((prev) => !prev);
+                }}
+              ></input>
+            </div>
+
+            <div className=" flex flex-col justify-center items-center border-2 border-amber-800/45 p-2 m-2">
+              <span className=" font-semibold mx-2 cursor-default">
+                Spl Characters
+              </span>
+              {/* SplChars Checkbox */}
+              <input
+                type="checkbox"
+                className=" cursor-pointer"
+                defaultChecked={IncludeSplChars}
+                onChange={() => {
+                  setIncludeSplChars((prev) => !prev);
+                }}
+              ></input>
+            </div>
           </div>
         </div>
       </div>
