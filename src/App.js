@@ -164,7 +164,7 @@ function App() {
               <input
                 type="range"
                 min="1"
-                max="30"
+                max="24"
                 value={Length}
                 className=" cursor-pointer appearance-none rounded-lg h-2 bg-gray-300 mobiles:h-4"
                 onChange={(e) => {
